@@ -3,7 +3,8 @@ from string import Template
 import ClauseWizard
 
 # キャラクターデータ抽出ツール
-INPUT_FILE = "input.txt"  # 1. 読み込むhoi4ファイルを指定する
+# 1. 読み込むhoi4ファイルを指定する
+INPUT_FILE = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\decisions\ssw_HUN.txt"
 COUNTRY_TAG = "HUN"
 # 2. このファイルを実行
 # 3. 読み込んだファイルの中身をoutput.txtで置き換える
@@ -51,7 +52,7 @@ def extruder(token: list[str]):
             for subkey, subvalue in value:
                 if subkey == "name":
                     name = subvalue[0]
-                    country_leader_id = name.lower().replace(" ", "_")
+                    country_leader_id = COUNTRY_TAG+"_"+name.lower().replace(" ", "_")
                     chara = characters.get(
                         country_leader_id, CountryLeader(country_leader_id))
                     chara.name = name
@@ -121,12 +122,13 @@ characters: dict[str, CountryLeader] = dict()
 
 
 for line in raw_txt.splitlines():
-    output.append(line+"\n")
     if "create_country_leader" in line:
         nest_count += 1
     elif 0 < nest_count and "{" in line:
         nest_count += 1
-    elif 0 < nest_count and "}" in line:
+    if nest_count == 0:
+        output.append(line+"\n")
+    if 0 < nest_count and "}" in line:
         nest_count -= 1
     if nest_count > 0:
         tokens_2_parse += line+"\n"
