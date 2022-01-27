@@ -7,7 +7,7 @@ from IdeologyLeader import IdeologyLeader
 
 # キャラクターデータ抽出ツール
 # 1. 読み込むhoi4ファイル, キャラクターフォルダを指定する
-INPUT_FILE = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\national_focus\ssw_HUN.txt"
+INPUT_FILE = R"C:\Users\YsikiShokurin\Programming\SSW_mod\events\_ssw_Fate_of_Countries.txt"
 CHARACTER_DIR = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\characters"
 # 2. このファイルを実行
 # 3. 読み込んだファイルの中身をoutput.txtで置き換える
@@ -135,7 +135,13 @@ for line in raw_txt.splitlines():
         token = ClauseWizard.cwparse(tokens_2_parse)
         characters_local = extruder(token)
         # print(characters_local)
-        characters.update(characters_local)
+        for chara_key in characters_local:  # グローバル辞書にすでにキャラが登録されている場合、まるごと上書きされるのを避ける
+            global_chara = characters.get(chara_key)
+            if global_chara == None:
+                characters[chara_key] = characters_local[chara_key]
+            else:  # すでにキャラが登録されている場合は、イデオロギー情報のみを追加
+                global_chara.ideologies.update(
+                    characters_local[chara_key].ideologies)
         tokens_2_parse = ""
         output.extend(
             [f"recruit_character = {key}\n" for key in characters_local.keys()])
