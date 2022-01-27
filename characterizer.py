@@ -5,12 +5,20 @@ from CountryLeader import CountryLeader
 from IdeologyLeader import IdeologyLeader
 
 # キャラクターデータ抽出ツール
-# 1. 読み込むhoi4ファイルを指定する
+# 1. 読み込むhoi4ファイル, キャラクターフォルダを指定する
 INPUT_FILE = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\decisions\ssw_HUN.txt"
-COUNTRY_TAG = "HUN"
+CHARACTER_DIR = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\characters"
 # 2. このファイルを実行
 # 3. 読み込んだファイルの中身をoutput.txtで置き換える
 # 4. out_chara.txtをcharactersフォルダに配置する
+
+
+def countryTagIdentifier(filename: str):
+    name = filename.split(R"\\")[-1].split(".")[0]
+    nameparts = name.split("_")
+    for part in nameparts:
+        if part.isupper():
+            return part
 
 
 def extruder(token: list[str]):
@@ -82,11 +90,20 @@ def getTemplate(filename: str):
 
 os.chdir(os.getcwd())
 
+mode = "replace"
+tag = countryTagIdentifier(INPUT_FILE)
+if tag == None:
+    print("カントリータグを判別できませんでした。実行ファイル下のフォルダに結果を出力します。")
+    mode = "non-replace"
+    tag = "TAG_REPLACE"
+
 raw_txt = getTemplate(INPUT_FILE)
+output_path = f"output/ssw_{tag}.txt" if mode != "replace" else INPUT_FILE
 os.makedirs("output", exist_ok=True)
-out_file = open(f"output/ssw_{COUNTRY_TAG}.txt", "w", encoding="utf-8")
+out_file = open(output_path, "w", encoding="utf-8")
+chara_path = f"characters/ssw_{tag}.txt" if mode != "replace" else CHARACTER_DIR+f"ssw_{tag}.txt"
 os.makedirs("characters", exist_ok=True)
-chara_file = open(f"characters/ssw_{COUNTRY_TAG}.txt", "w", encoding="utf-8")
+chara_file = open(f"characters/ssw_{tag}.txt", "a", encoding="utf-8")
 
 ideology_template = getTemplate("templates/ideology.txt")
 character_template = getTemplate("templates/character.txt")
@@ -140,3 +157,5 @@ root_txt = Template(root_template).substitute(replacer)
 
 chara_file.write(root_txt)
 chara_file.close()
+
+print("実行が終了しました")
