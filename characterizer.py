@@ -1,6 +1,8 @@
 import os
 from string import Template
 import ClauseWizard
+from CountryLeader import CountryLeader
+from IdeologyLeader import IdeologyLeader
 
 # キャラクターデータ抽出ツール
 # 1. 読み込むhoi4ファイルを指定する
@@ -9,31 +11,6 @@ COUNTRY_TAG = "HUN"
 # 2. このファイルを実行
 # 3. 読み込んだファイルの中身をoutput.txtで置き換える
 # 4. out_chara.txtをcharactersフォルダに配置する
-
-
-class IdeologyLeader():
-    ideology = ""
-    expire = ""
-    traits: list[str] = []
-
-    def __init__(self, ideology):
-        self.ideology = ideology
-
-    def __repr__(self):
-        return f"[{self.expire}, {self.traits}]"
-
-
-class CountryLeader():
-    id = ""
-    name = ""
-    picture = ""
-    ideologies: dict[str, IdeologyLeader] = dict()
-
-    def __init__(self, id):
-        self.id = id
-
-    def __repr__(self):
-        return f"{self.name}, {self.picture}, {self.ideologies}"
 
 
 def extruder(token: list[str]):
@@ -111,9 +88,9 @@ out_file = open(f"output/ssw_{COUNTRY_TAG}.txt", "w", encoding="utf-8")
 os.makedirs("characters", exist_ok=True)
 chara_file = open(f"characters/ssw_{COUNTRY_TAG}.txt", "w", encoding="utf-8")
 
-ideology_template = getTemplate("ideology.txt")
-character_template = getTemplate("character.txt")
-root_template = getTemplate("root.txt")
+ideology_template = getTemplate("templates/ideology.txt")
+character_template = getTemplate("templates/character.txt")
+root_template = getTemplate("templates/root.txt")
 
 output = []
 nest_count = 0
