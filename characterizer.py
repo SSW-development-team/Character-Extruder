@@ -37,7 +37,7 @@ def extruder(token: list[str]):
             for subkey, subvalue in value:
                 if subkey == "name":
                     name = subvalue[0]
-                    country_leader_id = COUNTRY_TAG+"_"+name.lower().replace(" ", "_")
+                    country_leader_id = tag+"_"+name.lower().replace(" ", "_")
                     chara = characters.get(
                         country_leader_id, CountryLeader(country_leader_id))
                     chara.name = name
@@ -101,9 +101,9 @@ raw_txt = getTemplate(INPUT_FILE)
 output_path = f"output/ssw_{tag}.txt" if mode != "replace" else INPUT_FILE
 os.makedirs("output", exist_ok=True)
 out_file = open(output_path, "w", encoding="utf-8")
-chara_path = f"characters/ssw_{tag}.txt" if mode != "replace" else CHARACTER_DIR+f"ssw_{tag}.txt"
+chara_path = f"characters/ssw_{tag}.txt" if mode != "replace" else CHARACTER_DIR+f"\ssw_{tag}.txt"
 os.makedirs("characters", exist_ok=True)
-chara_file = open(f"characters/ssw_{tag}.txt", "a", encoding="utf-8")
+chara_file = open(chara_path, "a", encoding="utf-8")
 
 ideology_template = getTemplate("templates/ideology.txt")
 character_template = getTemplate("templates/character.txt")
