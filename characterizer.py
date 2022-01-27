@@ -1,6 +1,8 @@
+import glob
 import os
 from sre_constants import ANY
 from string import Template
+from tkinter import E
 import ClauseWizard
 from CountryLeader import CountryLeader
 from IdeologyLeader import IdeologyLeader
@@ -107,10 +109,8 @@ def character_extruder(filename: str):
     raw_txt = getTemplate(filename)
     output_path = f"output/ssw_{tag}.txt" if mode != "replace" else filename
     os.makedirs("output", exist_ok=True)
-    out_file = open(output_path, "w", encoding="utf-8")
     chara_path = f"characters/ssw_{tag}.txt" if mode != "replace" else CHARACTER_DIR+f"\ssw_{tag}.txt"
     os.makedirs("characters", exist_ok=True)
-    chara_file = open(chara_path, "a", encoding="utf-8")
 
     ideology_template = getTemplate("templates/ideology.txt")
     character_template = getTemplate("templates/character.txt")
@@ -148,9 +148,6 @@ def character_extruder(filename: str):
             output.extend(
                 [f"recruit_character = {key}\n" for key in characters_local.keys()])
 
-    out_file.writelines(output)
-    out_file.close()
-
     # 出力整形
     character_txt = ""
     for key in characters:
@@ -167,6 +164,11 @@ def character_extruder(filename: str):
     replacer = {"characters": character_txt}
     root_txt = Template(root_template).substitute(replacer)
 
+    out_file = open(output_path, "w", encoding="utf-8")
+    out_file.writelines(output)
+    out_file.close()
+
+    chara_file = open(chara_path, "a", encoding="utf-8")
     chara_file.write(root_txt)
     chara_file.close()
 
@@ -174,5 +176,9 @@ def character_extruder(filename: str):
     print(f"実行が終了しました:{f_name}")
 
 
+files = glob.glob(
+    R"C:\Users\YsikiShokurin\Programming\SSW_mod\history\countries\*.txt")
+INPUT_FILE = files
+
 for filename in INPUT_FILE:
-    character_extruder(INPUT_FILE)
+    character_extruder(filename)
