@@ -7,7 +7,8 @@ from IdeologyLeader import IdeologyLeader
 
 # キャラクターデータ抽出ツール
 # 1. 読み込むhoi4ファイル, キャラクターフォルダを指定する
-INPUT_FILE = R"C:\Users\YsikiShokurin\Programming\SSW_mod\history\countries\ARO - Germany of Rosenberg.txt"
+INPUT_FILE = [
+    R"C:\Users\YsikiShokurin\Programming\SSW_mod\history\countries\ARO - Germany of Rosenberg.txt"]
 CHARACTER_DIR = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\characters"
 # 2. このファイルを実行
 # 3. 読み込んだファイルの中身をoutput.txtで置き換える
@@ -169,7 +170,9 @@ def character_extruder(filename: str):
     chara_file.write(root_txt)
     chara_file.close()
 
-    print("実行が終了しました")
+    f_name = filename.split("\\")[-1]
+    print(f"実行が終了しました:{f_name}")
 
 
-character_extruder(INPUT_FILE)
+for filename in INPUT_FILE:
+    character_extruder(INPUT_FILE)
