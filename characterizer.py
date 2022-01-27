@@ -164,6 +164,12 @@ def character_extruder(filename: str):
     replacer = {"characters": character_txt}
     root_txt = Template(root_template).substitute(replacer)
 
+    f_name = filename.split("\\")[-1]
+    if len(characters) == 0:
+        print(f"キャラクターは見つかりませんでした:{f_name}")
+        return
+
+    # キャラクターが存在するときのみ書き出し
     out_file = open(output_path, "w", encoding="utf-8")
     out_file.writelines(output)
     out_file.close()
@@ -171,8 +177,6 @@ def character_extruder(filename: str):
     chara_file = open(chara_path, "a", encoding="utf-8")
     chara_file.write(root_txt)
     chara_file.close()
-
-    f_name = filename.split("\\")[-1]
     print(f"実行が終了しました:{f_name}")
 
 
@@ -181,4 +185,9 @@ files = glob.glob(
 INPUT_FILE = files
 
 for filename in INPUT_FILE:
-    character_extruder(filename)
+    try:
+        character_extruder(filename)
+    except Exception as e:
+        f_name = filename.split("\\")[-1]
+        print(f"実行が失敗しました:{f_name}")
+        print(e)
