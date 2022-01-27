@@ -1,4 +1,5 @@
 import os
+from sre_constants import ANY
 from string import Template
 import ClauseWizard
 from CountryLeader import CountryLeader
@@ -6,7 +7,7 @@ from IdeologyLeader import IdeologyLeader
 
 # キャラクターデータ抽出ツール
 # 1. 読み込むhoi4ファイル, キャラクターフォルダを指定する
-INPUT_FILE = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\decisions\ssw_HUN.txt"
+INPUT_FILE = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\national_focus\ssw_CRO.txt"
 CHARACTER_DIR = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\characters"
 # 2. このファイルを実行
 # 3. 読み込んだファイルの中身をoutput.txtで置き換える
@@ -64,7 +65,9 @@ def extruder(token: list[str]):
                     ideology_leader.expire = expire_value_unknown_ideology
                     chara.ideologies[ideology] = ideology_leader
                 elif subkey == "traits":
-                    traits = subvalue
+                    traits: ANY = subvalue
+                    if type(traits[0]) == list:
+                        traits = [trait[0] for trait in traits]
                     chara = characters[country_leader_id]
                     if chara == None:
                         Exception(
