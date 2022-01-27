@@ -1,0 +1,8 @@
+country_leader = {
+	ideology = $ideology
+	expire = "$expire"
+	id = -1
+	traits = {
+		$traits
+	}
+}

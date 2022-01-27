@@ -1,0 +1,9 @@
+$id = {
+	name = $id
+	portraits = {
+		civilian = {
+			large = $picture
+		}
+	}
+	$ideology_leaders
+}

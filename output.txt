@@ -1,0 +1,853 @@
+add_namespace = ssw_srv
+country_event = {
+	#ベトナムからの声
+	id = ssw_srv.1
+	title = ssw_srv.1.t
+	desc = ssw_srv.1.d
+	fire_only_once = yes
+	is_triggered_only = yes
+	option = {
+		#応えよう
+		name = ssw_srv.1.a
+		add_war_support = 0.03
+		add_political_power = 100
+	}
+}
+
+country_event = {
+	#ベトナムからの連絡
+	id = ssw_srv.2
+	title = ssw_srv.2.t
+	desc = ssw_srv.2.d
+	fire_only_once = yes
+	is_triggered_only = yes
+	option = {
+		#素晴らしい！彼らの抵抗を支援しよう
+		name = ssw_srv.2.a
+		ai_chance = {
+			base = 60
+		}
+		add_war_support = 0.03
+		FROM = {
+			country_event = {
+				id = ssw_srv.3
+			}
+		}
+	}
+	option = {
+		#支援など無駄だ
+		name = ssw_srv.2.b
+		ai_chance = {
+			base = 40
+			modifier = {
+				has_war = yes
+				factor = 2
+			}
+		}
+		add_stability = 0.015
+		add_political_power = -100
+		FROM = {
+			country_event = {
+				id = ssw_srv.4
+			}
+		}
+	}
+}
+
+country_event = {
+	#ソ連が我々を支援！
+	id = ssw_srv.3
+	title = ssw_srv.3.t
+	desc = ssw_srv.3.d
+	fire_only_once = yes
+	is_triggered_only = yes
+	option = {
+		#素晴らしい！
+		name = ssw_srv.3.a
+		remove_ideas = SRV_lonely_battle
+	}
+}
+
+country_event = {
+	#ソ連が我々を無視！
+	id = ssw_srv.4
+	title = ssw_srv.4.t
+	desc = ssw_srv.4.d
+	fire_only_once = yes
+	is_triggered_only = yes
+	option = {
+		#奴らは頼りにならない
+		name = ssw_srv.4.a
+		add_war_support = -0.05
+	}
+}
+
+country_event = {
+	#農地改革の進展について
+	id = ssw_srv.5
+	title = ssw_srv.5.t
+	desc = ssw_srv.5.d
+	fire_only_once = yes
+	is_triggered_only = yes
+	option = {
+		#地主階級を排撃せよ！
+		name = ssw_srv.5.a
+		ai_chance = {
+			base = 25
+		}
+		add_stability = -0.15
+		add_war_support = -0.15
+		add_ideas = SRV_new_farmland_order
+	}
+	option = {
+		#地主と交渉しつつ土地を国有化する
+		name = ssw_srv.5.b
+		ai_chance = {
+			base = 40
+		}
+		add_stability = -0.05
+		add_war_support = 0.05
+		add_political_power = 100
+	}
+	option = {
+		#戦時は国家の安定を保つため最低限実施しよう
+		name = ssw_srv.5.c
+		ai_chance = {
+			base = 35
+		}
+		add_stability = 0.15
+		add_war_support = -0.2
+	}
+}
+
+country_event = {
+	#共産主義者の脅威に対する団結
+	id = ssw_srv.6
+	title = ssw_srv.6.t
+	desc = ssw_srv.6.d
+	fire_only_once = yes
+	is_triggered_only = yes
+	option = {
+		#備えよ
+		name = ssw_srv.6.a
+		add_war_support = 0.1
+		add_political_power = -100
+		country_event = {
+			id = ssw_srv.7
+			days = 2
+		}
+	}
+}
+
+country_event = {
+	#東京との連絡
+	id = ssw_srv.7
+	title = ssw_srv.7.t
+	desc = ssw_srv.7.d
+	fire_only_once = yes
+	is_triggered_only = yes
+	option = {
+		#インドシナは我々のものだ！
+		name = ssw_srv.7.a
+		every_country = {
+			limit = {
+				OR = {
+					tag = VIN
+					tag = LAO
+					tag = CAM
+				}
+			}
+			leave_faction = yes
+			if = {
+				limit = {
+					has_war = yes
+					NOT = {
+						has_war_with = SRV
+					}
+				}
+				every_enemy_country = {
+					white_peace = PREV
+				}
+			}
+			if = {
+				limit = {
+					tag = VIN
+				}
+				create_faction = Indochina_command
+				add_to_faction = LAO
+				add_to_faction = CAM
+			}
+		}
+		custom_effect_tooltip = SRV_liberate_indochina_tt
+		hidden_effect = {
+			JAP = {
+				end_puppet = LAO
+				end_puppet = CAM
+				end_puppet = VIN
+			}
+			if = {
+				limit = {
+					OR = {
+						LAO = {
+							has_war = yes
+						}
+						CAM = {
+							has_war = yes
+						}
+						VIN = {
+							has_war = yes
+						}
+					}
+				}
+				every_state = {
+					limit = {
+						NOT = {
+							is_core_of = LAO
+						}
+						NOT = {
+							is_core_of = CAM
+						}
+						NOT = {
+							is_core_of = VIN
+						}
+						NOT = {
+							is_owned_by = SRV
+						}
+					}
+					teleport_armies = {
+						limit = {
+							tag = LAO
+						}
+						to_state = 1264
+					}
+					teleport_armies = {
+						limit = {
+							tag = CAM
+						}
+						to_state = 1260
+					}
+					teleport_armies = {
+						limit = {
+							tag = VIN
+						}
+						to_state = 1258
+					}
+				}
+			}
+			country_event = {
+				id = ssw_srv.8
+				days = 7
+			}
+			SRV = {
+				country_event = {
+					id = ssw_srv.9
+					days = 8
+				}
+			}
+			country_event = {
+				id = ssw_srv.10
+				days = 8
+			}
+			LAO = {
+				country_event = {
+					id = ssw_srv.10
+					days = 8
+				}
+			}
+			CAM = {
+				country_event = {
+					id = ssw_srv.10
+					days = 8
+				}
+			}
+			hidden_effect = {
+				every_country = {
+					limit = {
+						OR = {
+							tag = VIN
+							tag = LAO
+							tag = CAM
+						}
+					}
+					set_major = yes
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	#共産主義者の蜂起(hidden)
+	id = ssw_srv.8
+	title = ssw_srv.8.t
+	desc = ssw_srv.8.d
+	fire_only_once = yes
+	is_triggered_only = yes
+	hidden = yes
+	option = {
+		name = ssw_srv.8.a
+		SRV = {
+			set_major = yes
+		}
+		PTL = {
+			transfer_state = 1263
+			transfer_state = 1265
+			set_cosmetic_tag = LAO_peoples_liberation_army
+			set_major = yes
+			every_state = {
+				limit = {
+					is_core_of = LAO
+				}
+				add_core_of = PREV
+			}
+			division_template = {
+				name = "Militia Division"
+				regiments = {
+					militia = {
+						x = 0
+						y = 0
+					}
+					militia = {
+						x = 0
+						y = 1
+					}
+					militia = {
+						x = 0
+						y = 2
+					}
+				}
+			}
+			1263 = {
+				#民兵*3*5
+				create_unit = {
+					division = "name = \"Militia Division\" division_template = \"Militia Division\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 12392
+				}
+				create_unit = {
+					division = "name = \"Militia Division\" division_template = \"Militia Division\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 12433
+				}
+			}
+			1265 = {
+				create_unit = {
+					division = "name = \"Militia Division\" division_template = \"Militia Division\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 7218
+				}
+				create_unit = {
+					division = "name = \"Militia Division\" division_template = \"Militia Division\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 13528
+				}
+				create_unit = {
+					division = "name = \"Militia Division\" division_template = \"Militia Division\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 13531
+				}
+			}
+		}
+		SRV = {
+			puppet = PTL
+		}
+		KPR = {
+			transfer_state = 826
+			transfer_state = 1259
+			set_cosmetic_tag = KHMER_issarak
+			set_major = yes
+			every_state = {
+				limit = {
+					is_core_of = CAM
+				}
+				add_core_of = PREV
+			}
+			division_template = {
+				name = "Infantry division"
+				regiments = {
+					infantry = {
+						x = 0
+						y = 0
+					}
+					infantry = {
+						x = 0
+						y = 1
+					}
+					infantry = {
+						x = 1
+						y = 0
+					}
+					infantry = {
+						x = 1
+						y = 1
+					}
+				}
+			}
+			division_template = {
+				name = "Militia Division"
+				regiments = {
+					militia = {
+						x = 0
+						y = 0
+					}
+					militia = {
+						x = 0
+						y = 1
+					}
+					militia = {
+						x = 0
+						y = 2
+					}
+				}
+			}
+			1259 = {
+				#歩兵*4*1
+				create_unit = {
+					division = "name = \"Infantry division\" division_template = \"Infantry division\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 7376
+				}
+				#民兵*3*5
+				create_unit = {
+					division = "name = \"Militia Division\" division_template = \"Militia Division\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 12260
+				}
+			}
+			826 = {
+				create_unit = {
+					division = "name = \"Militia Division\" division_template = \"Militia Division\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 13519
+				}
+				create_unit = {
+					division = "name = \"Militia Division\" division_template = \"Militia Division\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 4359
+				}
+				create_unit = {
+					division = "name = \"Militia Division\" division_template = \"Militia Division\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 7432
+				}
+				create_unit = {
+					division = "name = \"Militia Division\" division_template = \"Militia Division\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 1353
+				}
+			}
+		}
+		NLF = {
+			every_state = {
+				limit = {
+					is_core_of = VIN
+					is_owned_by = VIN
+				}
+				add_core_of = PREV
+			}
+			transfer_state = 1013
+			set_province_controller = 1423
+			set_cosmetic_tag = SOUTH_VIETNAM_national_liberation_front
+			set_major = yes
+			puppet = KPR
+			division_template = {
+				name = "Su doan bo binh"
+				regiments = {
+					infantry = {
+						x = 0
+						y = 0
+					}
+					infantry = {
+						x = 0
+						y = 1
+					}
+					infantry = {
+						x = 0
+						y = 2
+					}
+					infantry = {
+						x = 1
+						y = 0
+					}
+					infantry = {
+						x = 1
+						y = 1
+					}
+					infantry = {
+						x = 1
+						y = 2
+					}
+				}
+			}
+			division_template = {
+				name = "Phong dan quan 1"
+				regiments = {
+					militia = {
+						x = 0
+						y = 0
+					}
+					militia = {
+						x = 0
+						y = 1
+					}
+					militia = {
+						x = 0
+						y = 2
+					}
+					militia = {
+						x = 1
+						y = 0
+					}
+					militia = {
+						x = 1
+						y = 1
+					}
+				}
+			}
+			division_template = {
+				name = "Phong dan quan 2"
+				regiments = {
+					militia = {
+						x = 0
+						y = 0
+					}
+					militia = {
+						x = 0
+						y = 1
+					}
+					militia = {
+						x = 0
+						y = 2
+					}
+				}
+			}
+			1013 = {
+				#歩兵*6*1
+				create_unit = {
+					division = "name = \"Su doan bo binh\" division_template = \"Su doan bo binh\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 12133
+				}
+				#民兵*5*8
+				create_unit = {
+					division = "name = \"Phong dan quan 1\" division_template = \"Phong dan quan 1\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 7303
+				}
+				create_unit = {
+					division = "name = \"Phong dan quan 1\" division_template = \"Phong dan quan 1\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 4223
+				}
+				create_unit = {
+					division = "name = \"Phong dan quan 1\" division_template = \"Phong dan quan 1\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 12133
+				}
+				create_unit = {
+					division = "name = \"Phong dan quan 1\" division_template = \"Phong dan quan 1\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 4341
+				}
+				create_unit = {
+					division = "name = \"Phong dan quan 1\" division_template = \"Phong dan quan 1\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 7303
+				}
+				create_unit = {
+					division = "name = \"Phong dan quan 1\" division_template = \"Phong dan quan 1\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 4223
+				}
+				create_unit = {
+					division = "name = \"Phong dan quan 1\" division_template = \"Phong dan quan 1\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 12133
+				}
+				#民兵*3*5
+				create_unit = {
+					division = "name = \"Phong dan quan 2\" division_template = \"Phong dan quan 2\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 12133
+				}
+				create_unit = {
+					division = "name = \"Phong dan quan 2\" division_template = \"Phong dan quan 2\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 4284
+				}
+				create_unit = {
+					division = "name = \"Phong dan quan 2\" division_template = \"Phong dan quan 2\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 7331
+				}
+				create_unit = {
+					division = "name = \"Phong dan quan 2\" division_template = \"Phong dan quan 2\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 4341
+				}
+			}
+			1254 = {
+				create_unit = {
+					division = "name = \"Phong dan quan 1\" division_template = \"Phong dan quan 1\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 1423
+				}
+				create_unit = {
+					division = "name = \"Phong dan quan 2\" division_template = \"Phong dan quan 2\" start_experience_factor = 0.1"
+					owner = PREV
+					prioritize_location = 1423
+				}
+			}
+		}
+		KPR = {
+			set_popularities = {
+				progressive_communism = 40
+				classical_communism = 55
+				social_democracy = 5
+			}
+			set_politics = {
+				ruling_party = progressive_communism
+				elections_allowed = no
+			}
+		}
+		PTL = {
+			set_popularities = {
+				classical_communism = 50
+				progressive_communism = 12
+				social_democracy = 23
+				authority_despotism = 10
+				national_fascism = 5
+			}
+			set_politics = {
+				ruling_party = classical_communism
+				elections_allowed = no
+			}
+		}
+		SRV = {
+			add_to_faction = NLF
+		}
+		set_global_flag = Indochina_war_started
+		JAP = {
+			country_event = {
+				id = ssw_indochina_war.15
+			}
+		}
+	}
+}
+
+country_event = {
+	#解放の開始
+	id = ssw_srv.9
+	title = ssw_srv.9.t
+	desc = ssw_srv.9.d
+	is_triggered_only = yes
+	option = {
+		#奴らを叩き潰せ！
+		name = ssw_srv.9.a
+		declare_war_on = {
+			target = VIN
+			type = annex_everything
+		}
+	}
+}
+
+country_event = {
+	#共産主義者の蜂起！
+	id = ssw_srv.10
+	title = ssw_srv.10.t
+	desc = ssw_srv.10.d
+	is_triggered_only = yes
+	option = {
+		#共栄圏は滅びない！
+		name = ssw_srv.10.a
+		add_stability = -0.1
+		if = {
+			limit = {
+				tag = VIN
+				NOT = {
+					has_war_with = NLF
+				}
+			}
+			declare_war_on = {
+				target = NLF
+				type = annex_everything
+			}
+		}
+		if = {
+			limit = {
+				tag = LAO
+				NOT = {
+					has_war_with = PTL
+				}
+			}
+			declare_war_on = {
+				target = PTL
+				type = annex_everything
+			}
+		}
+		if = {
+			limit = {
+				tag = CAM
+				NOT = {
+					has_war_with = KPR
+				}
+			}
+			declare_war_on = {
+				target = KPR
+				type = annex_everything
+			}
+		}
+	}
+	option = {
+		#帝国主義など時代遅れだ！
+		name = ssw_srv.10.b
+		trigger = {
+			is_ai = no
+		}
+		add_stability = -0.1
+		if = {
+			limit = {
+				tag = VIN
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_war_with = NLF
+					}
+				}
+				declare_war_on = {
+					target = NLF
+					type = annex_everything
+				}
+			}
+			NLF = {
+				change_tag_from = ROOT
+			}
+		}
+		if = {
+			limit = {
+				tag = LAO
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_war_with = PTL
+					}
+				}
+				declare_war_on = {
+					target = PTL
+					type = annex_everything
+				}
+			}
+			PTL = {
+				change_tag_from = ROOT
+			}
+		}
+		if = {
+			limit = {
+				tag = CAM
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_war_with = KPR
+					}
+				}
+				declare_war_on = {
+					target = KPR
+					type = annex_everything
+				}
+			}
+			KPR = {
+				change_tag_from = ROOT
+			}
+		}
+	}
+}
+
+country_event = {
+	#全国大会
+	id = ssw_srv.11
+	title = ssw_srv.11.t
+	desc = ssw_srv.11.d
+	fire_only_once = yes
+	is_triggered_only = yes
+	option = {
+		#ヴォー・グエン・ザップの選出！
+		name = ssw_srv.11.a
+		trigger = {
+			check_variable = {
+				SRV_inf_Vo_Nguyen_Giap > SRV_inf_Truong_Chinh
+			}
+		}
+		create_country_leader = {
+			name = "Vo Nguyen Giap"
+			#desc = ""
+			picture = "gfx/characters/large/SRV/Portrait_Vo_Nguyen_Giap.png"
+			expire = "1990.1.1"
+			ideology = anarchism_ideology
+			traits = {
+			}
+		}
+		recruit_character = vo_nguyen_giap
+		create_country_leader = {
+			name = "Vo Nguyen Giap"
+			#desc = ""
+			picture = "gfx/characters/large/SRV/Portrait_Vo_Nguyen_Giap.png"
+			expire = "1990.1.1"
+			ideology = progressive_communism_ideology
+			traits = {
+			}
+		}
+		recruit_character = vo_nguyen_giap
+		create_country_leader = {
+			name = "Vo Nguyen Giap"
+			#desc = ""
+			picture = "gfx/characters/large/SRV/Portrait_Vo_Nguyen_Giap.png"
+			expire = "1990.1.1"
+			ideology = marxism_leninism_ideology
+			traits = {
+			}
+		}
+		recruit_character = vo_nguyen_giap
+	}
+	option = {
+		#チュオン・チンの選出！
+		name = ssw_srv.11.b
+		trigger = {
+			check_variable = {
+				SRV_inf_Truong_Chinh > SRV_inf_Vo_Nguyen_Giap
+			}
+		}
+		create_country_leader = {
+			name = "Truong Chinh"
+			#desc = ""
+			picture = "gfx/characters/large/SRV/Portrait_Truong_Chinh.png"
+			expire = "1990.1.1"
+			ideology = anarchism_ideology
+			traits = {
+			}
+		}
+		recruit_character = truong_chinh
+		create_country_leader = {
+			name = "Truong Chinh"
+			#desc = ""
+			picture = "gfx/characters/large/SRV/Portrait_Truong_Chinh.png"
+			expire = "1990.1.1"
+			ideology = progressive_communism_ideology
+			traits = {
+			}
+		}
+		recruit_character = truong_chinh
+		create_country_leader = {
+			name = "Truong Chinh"
+			#desc = ""
+			picture = "gfx/characters/large/SRV/Portrait_Truong_Chinh.png"
+			expire = "1990.1.1"
+			ideology = marxism_leninism_ideology
+			traits = {
+			}
+		}
+		recruit_character = truong_chinh
+	}
+}
