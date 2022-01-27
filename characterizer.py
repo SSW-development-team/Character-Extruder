@@ -4,6 +4,7 @@ import ClauseWizard
 
 # キャラクターデータ抽出ツール
 INPUT_FILE = "input.txt"  # 1. 読み込むhoi4ファイルを指定する
+COUNTRY_TAG = "HUN"
 # 2. このファイルを実行
 # 3. 読み込んだファイルの中身をoutput.txtで置き換える
 # 4. out_chara.txtをcharactersフォルダに配置する
@@ -104,8 +105,10 @@ def getTemplate(filename: str):
 os.chdir(os.getcwd())
 
 raw_txt = getTemplate(INPUT_FILE)
-out_file = open("output.txt", "w", encoding="utf-8")
-chara_file = open("out_chara.txt", "w", encoding="utf-8")
+os.makedirs("output", exist_ok=True)
+out_file = open(f"output/ssw_{COUNTRY_TAG}.txt", "w", encoding="utf-8")
+os.makedirs("characters", exist_ok=True)
+chara_file = open(f"characters/ssw_{COUNTRY_TAG}.txt", "w", encoding="utf-8")
 
 ideology_template = getTemplate("ideology.txt")
 character_template = getTemplate("character.txt")
