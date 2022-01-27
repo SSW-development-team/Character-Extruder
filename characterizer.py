@@ -7,7 +7,7 @@ from IdeologyLeader import IdeologyLeader
 
 # キャラクターデータ抽出ツール
 # 1. 読み込むhoi4ファイル, キャラクターフォルダを指定する
-INPUT_FILE = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\national_focus\ssw_FRA.txt"
+INPUT_FILE = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\national_focus\ssw_HUN.txt"
 CHARACTER_DIR = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\characters"
 # 2. このファイルを実行
 # 3. 読み込んだファイルの中身をoutput.txtで置き換える
@@ -24,7 +24,7 @@ def countryTagIdentifier(filename: str):
 
 def extruder(token: list[str]):
     """return the list of CountryLeader from tokens"""
-    characters: dict[str, CountryLeader] = dict()
+    l_characters: dict[str, CountryLeader] = dict()
     # TARGET_SINGLE_TOKENS = ["picture", "expire", "ideology"]
     while len(token) > 0:
         tokenpair = token.pop(0)
@@ -39,14 +39,14 @@ def extruder(token: list[str]):
                 if subkey == "name":
                     name = subvalue[0]
                     country_leader_id = tag+"_"+name.lower().replace(" ", "_")
-                    chara = characters.get(
+                    chara = l_characters.get(
                         country_leader_id, CountryLeader(country_leader_id))
                     chara.name = name
-                    characters[country_leader_id] = chara
+                    l_characters[country_leader_id] = chara
                 elif subkey == "picture":
                     picture = subvalue[0].replace(
                         r"^\"|\"$", "")  # 先頭と末尾のクオーテーションは除く
-                    chara = characters[country_leader_id]
+                    chara = l_characters[country_leader_id]
                     if chara == None:
                         Exception(
                             "name token was not found before other token apper")
@@ -57,7 +57,7 @@ def extruder(token: list[str]):
                 elif subkey == "ideology":
                     ideology = subvalue[0]
                     current_ideology = ideology
-                    chara = characters[country_leader_id]
+                    chara = l_characters[country_leader_id]
                     if chara == None:
                         Exception(
                             "name token was not found before other token apper")
@@ -69,7 +69,7 @@ def extruder(token: list[str]):
                     traits: ANY = subvalue
                     if type(traits[0]) == list:
                         traits = [trait[0] for trait in traits]
-                    chara = characters[country_leader_id]
+                    chara = l_characters[country_leader_id]
                     if chara == None:
                         Exception(
                             "name token was not found before other token apper")
@@ -77,7 +77,7 @@ def extruder(token: list[str]):
         else:  # トークンがcreate_country_leaderでない場合
             # 値を解析予定トークンとして追加してネストを深くする
             token.extend(value)
-    return characters
+    return l_characters
 
 
 def splitter(string: str):
