@@ -7,7 +7,7 @@ from IdeologyLeader import IdeologyLeader
 
 # キャラクターデータ抽出ツール
 # 1. 読み込むhoi4ファイル, キャラクターフォルダを指定する
-INPUT_FILE = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\national_focus\ssw_CRO.txt"
+INPUT_FILE = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\national_focus\ssw_FRA.txt"
 CHARACTER_DIR = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\characters"
 # 2. このファイルを実行
 # 3. 読み込んだファイルの中身をoutput.txtで置き換える
@@ -44,7 +44,8 @@ def extruder(token: list[str]):
                     chara.name = name
                     characters[country_leader_id] = chara
                 elif subkey == "picture":
-                    picture = subvalue[0]
+                    picture = subvalue[0].replace(
+                        r"^\"|\"$", "")  # 先頭と末尾のクオーテーションは除く
                     chara = characters[country_leader_id]
                     if chara == None:
                         Exception(

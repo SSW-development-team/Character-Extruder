@@ -2,7 +2,7 @@ $id = {
 	name = $id
 	portraits = {
 		civilian = {
-			large = $picture
+			large = "$picture"
 		}
 	}
 	$ideology_leaders
