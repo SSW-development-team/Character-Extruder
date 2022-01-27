@@ -7,7 +7,7 @@ from IdeologyLeader import IdeologyLeader
 
 # キャラクターデータ抽出ツール
 # 1. 読み込むhoi4ファイル, キャラクターフォルダを指定する
-INPUT_FILE = R"C:\Users\YsikiShokurin\Programming\SSW_mod\events\_ssw_Fate_of_Countries.txt"
+INPUT_FILE = R"C:\Users\YsikiShokurin\Programming\SSW_mod\history\countries\ANG - Angola.txt"
 CHARACTER_DIR = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\characters"
 # 2. このファイルを実行
 # 3. 読み込んだファイルの中身をoutput.txtで置き換える
@@ -15,8 +15,8 @@ CHARACTER_DIR = R"C:\Users\YsikiShokurin\Programming\SSW_mod\common\characters"
 
 
 def countryTagIdentifier(filename: str):
-    name = filename.split(R"\\")[-1].split(".")[0]
-    nameparts = name.split("_")
+    name = filename.split("\\")[-1].split(".")[0]
+    nameparts: list[str] = [*name.split("_"), *name.split(" - ")]
     for part in nameparts:
         if part.isupper():
             return part
