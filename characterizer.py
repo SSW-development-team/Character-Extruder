@@ -2,7 +2,6 @@ import glob
 import os
 from sre_constants import ANY
 from string import Template
-from tkinter import E
 import ClauseWizard
 from CountryLeader import CountryLeader
 from IdeologyLeader import IdeologyLeader
